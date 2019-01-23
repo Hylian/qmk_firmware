@@ -53,10 +53,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
              KC_LCBR,     KC_Y,   KC_U,    KC_I,    KC_O,   KC_P,             KC_PIPE,
                           KC_H,   KC_J,    KC_K,    KC_L,   KC_SCLN,          KC_QUOT,
              KC_RCBR,     KC_N,   KC_M,    KC_COMM, KC_DOT, KC_SLASH,         KC_RSFT,
-                                  KC_LEFT, KC_DOWN, KC_UP,  KC_RIGHT,          KC_FN2,
+                                  KC_LEFT, KC_DOWN, KC_UP,  KC_RIGHT,         MO(SYMB),
              KC_PGDN,  KC_PGUP,
-             KC_FN1,
-             KC_FN2,   KC_DEL, KC_BSPACE
+             MO(SYMB),
+             MO(MDIA), KC_DEL, KC_BSPACE
     ),
 /* Keymap 1: Symbol Layer
  *
