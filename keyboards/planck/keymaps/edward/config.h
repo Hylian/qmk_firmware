@@ -13,6 +13,34 @@
                                 }
 #endif
 
+#define MOUSEKEY_DELAY 10
+#define MOUSEKEY_INTERVAL 20
+#define MOUSEKEY_TIME_TO_MAX 10
+
+#undef MATRIX_ROW_PINS
+#undef MATRIX_COL_PINS
+
+#define MATRIX_ROW_PINS { B0, E7, F0, F1 }
+#define MATRIX_COL_PINS { E6, E3, E4, D3, D4, D5, C0, A7, A6, E1, E0, D7 }
+
+#define C6_AUDIO
+#define B5_AUDIO
+
+#undef BACKLIGHT_PIN
+
+#define BACKLIGHT_PIN A5
+
+#define DRIVER_ADDR_1 0b1110100
+#define DRIVER_ADDR_2 0b1110110
+
+#define DRIVER_COUNT 2
+#define DRIVER_1_LED_TOTAL 25
+#define DRIVER_2_LED_TOTAL 24
+#undef DRIVER_LED_TOTAL
+#define DRIVER_LED_TOTAL (DRIVER_1_LED_TOTAL + DRIVER_2_LED_TOTAL)
+
+
+
 /*
  * MIDI options
  */
