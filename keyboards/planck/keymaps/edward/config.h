@@ -13,6 +13,8 @@
                                 }
 #endif
 
+#define PERMISSIVE_HOLD
+
 #define MOUSEKEY_DELAY 10
 #define MOUSEKEY_INTERVAL 20
 #define MOUSEKEY_TIME_TO_MAX 10
