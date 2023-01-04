@@ -7,4 +7,5 @@
 #define MOUSEKEY_WHEEL_DELAY 0
 
 /* Set 0 if debouncing isn't needed */
-#define DEBOUNCE    20
+#undef DEBOUNCE
+#define DEBOUNCE    2
