@@ -168,5 +168,4 @@ void matrix_scan_user(void) {
 };
 
 void keyboard_post_init_user(void) {
-  debug_enable = true;
 }
