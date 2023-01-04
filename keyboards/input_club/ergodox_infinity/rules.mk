@@ -17,12 +17,12 @@ BOARD = IC_TEENSY_3_1
 BOOTMAGIC_ENABLE = no       # Enable Bootmagic Lite
 MOUSEKEY_ENABLE  = yes # Mouse keys
 EXTRAKEY_ENABLE  = yes # Audio control and System control
-CONSOLE_ENABLE   = no  # Console for debug
-COMMAND_ENABLE   = yes # Commands for debug and configuration
+CONSOLE_ENABLE   = yes  # Console for debug
+COMMAND_ENABLE   = no # Commands for debug and configuration
 NKRO_ENABLE = yes           # Enable N-Key Rollover
 UNICODE_ENABLE   = yes # Unicode
-SWAP_HANDS_ENABLE= yes # Allow swapping hands of keyboard
-SLEEP_LED_ENABLE = yes
+SWAP_HANDS_ENABLE= no # Allow swapping hands of keyboard
+SLEEP_LED_ENABLE = no
 
 RGBLIGHT_ENABLE = no
 
@@ -34,4 +34,4 @@ ST7565_ENABLE = yes
 LED_MATRIX_ENABLE = yes
 LED_MATRIX_DRIVER = IS31FL3731
 
-LAYOUTS = ergodox
+#LAYOUTS = ergodox

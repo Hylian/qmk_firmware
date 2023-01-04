@@ -28,7 +28,7 @@
 // 7 - 562 500  Hz ->   4 Hz
 // Using a higher pre-scalar without flicker is possible but FTM0_MOD will need to be reduced
 // Which will reduce the brightness range
-#define PRESCALAR_DEFINE 0
+#define PRESCALAR_DEFINE 2
 void lcd_backlight_hal_init(void) {
     // Setup Backlight
     SIM->SCGC6 |= SIM_SCGC6_FTM0;
@@ -294,6 +294,7 @@ __attribute__((weak)) void st7565_off_user(void) {
     ergodox_infinity_lcd_color(0, 0, 0);
 }
 
+/*
 static void format_layer_bitmap_string(char* buffer, uint8_t offset) {
     for (int i = 0; i < 16 && i + offset < MAX_LAYER; i++) {
         if (i == 0 || i == 4 || i == 8 || i == 12) {
@@ -313,8 +314,10 @@ static void format_layer_bitmap_string(char* buffer, uint8_t offset) {
     }
     *buffer = 0;
 }
+*/
 
 __attribute__((weak)) void st7565_task_user(void) {
+  /*
     if (is_keyboard_master()) {
         // Draw led and layer status
         led_t leds = host_keyboard_led_state();
@@ -343,10 +346,14 @@ __attribute__((weak)) void st7565_task_user(void) {
         st7565_write(qmk_logo, false);
         st7565_write("  Infinity  Ergodox  ", false);
     }
+    */
 }
 #endif
 
 #if defined(SPLIT_KEYBOARD)
+void usart_init(void) {
+   }
+
 void usart_master_init(SerialDriver **driver) {
     PORTA->PCR[1] = PORTx_PCRn_PE | PORTx_PCRn_PS | PORTx_PCRn_PFE | PORTx_PCRn_MUX(2);
     PORTA->PCR[2] = PORTx_PCRn_DSE | PORTx_PCRn_SRE | PORTx_PCRn_MUX(2);

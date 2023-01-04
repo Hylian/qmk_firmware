@@ -135,8 +135,18 @@ static inline bool initiate_transaction(uint8_t transaction_id) {
      *   - due to the half duplex limitations on return codes, we always have to read *something*.
      *   - without the read, write only transactions *always* succeed, even during the boot process where the slave is not ready.
      */
+    /*
     if (unlikely(!serial_transport_receive(&transaction_id_shake, sizeof(transaction_id_shake)) || (transaction_id_shake != (transaction_id ^ NUM_TOTAL_TRANSACTIONS)))) {
         serial_dprintf("SPLIT: receiving handshake failed\n");
+        return false;
+    }
+    */
+
+    bool ret = serial_transport_receive(&transaction_id_shake, sizeof(transaction_id_shake));
+    //if (!ret || (transaction_id_shake != (transaction_id ^ NUM_TOTAL_TRANSACTIONS))) {
+    if (!ret) {
+        serial_dprintf("SPLIT: receiving handshake failed\n");
+        serial_dprintf("ret(%u) tis(%u) tid(%u)\n", ret, transaction_id_shake, transaction_id ^ NUM_TOTAL_TRANSACTIONS);
         return false;
     }
 

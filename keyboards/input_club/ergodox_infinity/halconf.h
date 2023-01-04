@@ -29,5 +29,7 @@
 
 #define SERIAL_BUFFERS_SIZE 128
 
+#define PAL_MODE_ALTERNATE(n) 0
+
 #include_next <halconf.h>
 

@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+#undef SPLIT_USB_DETECT
+
 #define MOUSEKEY_INTERVAL       20
 #define MOUSEKEY_DELAY          0
 #define MOUSEKEY_TIME_TO_MAX    60
@@ -25,6 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define TAPPING_TOGGLE  1
 
+#define EE_HANDS
+
 /* define if matrix has ghost */
 //#define MATRIX_HAS_GHOST
 
@@ -32,9 +36,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define IGNORE_MOD_TAP_INTERRUPT // this makes it possible to do rolling combos (zx) with keys that convert to other keys on hold (z becomes ctrl when you hold it, and when this option isn't enabled, z rapidly followed by x actually sends Ctrl-x. That's bad.)
 
 /* Mechanical locking support. Use KC_LCAP, KC_LNUM or KC_LSCR instead in keymap */
-#define LOCKING_SUPPORT_ENABLE
+//#define LOCKING_SUPPORT_ENABLE
 /* Locking resynchronize hack */
-#define LOCKING_RESYNC_ENABLE
+//#define LOCKING_RESYNC_ENABLE
 
 /* key combination for command */
 #define IS_COMMAND() ( \
@@ -54,51 +58,54 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DIODE_DIRECTION ROW2COL
 
 /* Serial config (for communication between halves) */
+#define SERIAL_USART_TIMEOUT 50
 #define SERIAL_USART_DRIVER SD1  // Only true for the master half
 #define SERIAL_USART_CONFIG { (SERIAL_USART_SPEED), } // Only field is speed
 #define SERIAL_USART_FULL_DUPLEX
+#define SERIAL_DEBUG
 
 /* number of backlight levels */
 #define BACKLIGHT_LEVELS 3
 
 #define LED_BRIGHTNESS_LO       100
-#define LED_BRIGHTNESS_HI       255
+#define LED_BRIGHTNESS_HI       145
 
 /* LED matrix driver */
 #define LED_DRIVER_ADDR_1 0x74
 #define LED_DRIVER_COUNT 1
 #define LED_MATRIX_LED_COUNT 76
-#define LED_MATRIX_SPLIT { 38, 38 }
-#define LED_DISABLE_WHEN_USB_SUSPENDED
+//#define LED_MATRIX_LED_COUNT 76
+//#define LED_MATRIX_SPLIT { 38, 38 }
+//#define LED_DISABLE_WHEN_USB_SUSPENDED
 
 // LED Matrix Animation modes. Explicitly enabled
 // For full list of effects, see:
 // https://docs.qmk.fm/#/feature_led_matrix?id=led-matrix-effects
-#define ENABLE_LED_MATRIX_ALPHAS_MODS
-#define ENABLE_LED_MATRIX_BREATHING
-#define ENABLE_LED_MATRIX_BAND
-#define ENABLE_LED_MATRIX_BAND_PINWHEEL
-#define ENABLE_LED_MATRIX_BAND_SPIRAL
-#define ENABLE_LED_MATRIX_CYCLE_LEFT_RIGHT
-#define ENABLE_LED_MATRIX_CYCLE_UP_DOWN
-#define ENABLE_LED_MATRIX_CYCLE_OUT_IN
-#define ENABLE_LED_MATRIX_DUAL_BEACON
-#if defined(LED_MATRIX_KEYREACTIVE_ENABLED)
-#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_SIMPLE
-#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_WIDE
-#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_MULTIWIDE
-#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_CROSS
-#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_MULTICROSS
-#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_NEXUS
-#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_MULTINEXUS
-#    define ENABLE_LED_MATRIX_SPLASH
-#    define ENABLE_LED_MATRIX_MULTISPLASH
-#endif
-#define ENABLE_LED_MATRIX_WAVE_LEFT_RIGHT
-#define ENABLE_LED_MATRIX_WAVE_UP_DOWN
+//#define ENABLE_LED_MATRIX_ALPHAS_MODS
+//#define ENABLE_LED_MATRIX_BREATHING
+//#define ENABLE_LED_MATRIX_BAND
+//#define ENABLE_LED_MATRIX_BAND_PINWHEEL
+//#define ENABLE_LED_MATRIX_BAND_SPIRAL
+//#define ENABLE_LED_MATRIX_CYCLE_LEFT_RIGHT
+//#define ENABLE_LED_MATRIX_CYCLE_UP_DOWN
+//#define ENABLE_LED_MATRIX_CYCLE_OUT_IN
+//#define ENABLE_LED_MATRIX_DUAL_BEACON
+//#if defined(LED_MATRIX_KEYREACTIVE_ENABLED)
+//#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_SIMPLE
+//#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_WIDE
+//#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_MULTIWIDE
+//#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_CROSS
+//#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_MULTICROSS
+//#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_NEXUS
+//#    define ENABLE_LED_MATRIX_SOLID_REACTIVE_MULTINEXUS
+//#    define ENABLE_LED_MATRIX_SPLASH
+//#    define ENABLE_LED_MATRIX_MULTISPLASH
+//#endif
+//#define ENABLE_LED_MATRIX_WAVE_LEFT_RIGHT
+//#define ENABLE_LED_MATRIX_WAVE_UP_DOWN
 
 /* i2c (for LED matrix) */
-#define I2C1_CLOCK_SPEED 400000
+#define I2C1_CLOCK_SPEED 200000
 #define I2C1_SCL_PAL_MODE PAL_MODE_ALTERNATIVE_2
 #define I2C1_SDA_PAL_MODE PAL_MODE_ALTERNATIVE_2
 #define I2C1_SCL_PIN B0
