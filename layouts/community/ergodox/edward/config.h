@@ -4,8 +4,11 @@
 #define MOUSEKEY_DELAY          0
 #define MOUSEKEY_TIME_TO_MAX    60
 #define MOUSEKEY_MAX_SPEED      7
-#define MOUSEKEY_WHEEL_DELAY 0
+#define MOUSEKEY_WHEEL_DELAY    0
 
 /* Set 0 if debouncing isn't needed */
 #undef DEBOUNCE
-#define DEBOUNCE    2
+#define DEBOUNCE  2
+
+#define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_ST7565_ENABLE
