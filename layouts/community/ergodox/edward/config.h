@@ -12,3 +12,5 @@
 
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_ST7565_ENABLE
+
+#define usb_lld_disconnect_bus(usbp) do {} while(0)

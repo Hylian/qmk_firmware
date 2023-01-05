@@ -163,6 +163,7 @@ void matrix_init_user(void) {
 
 void keyboard_post_init_user(void) {
   //debug_enable = true;
+  ergodox_infinity_lcd_color(2000, 2000, 2000);
 }
 
 void st7565_task_user(void) {
@@ -178,7 +179,7 @@ void st7565_task_user(void) {
       st7565_write("Mouse", false);
       break;
     default:
-      ergodox_infinity_lcd_color(800, 800, 800);
+      ergodox_infinity_lcd_color(2000, 2000, 2000);
       st7565_clear();
       break;
   }
