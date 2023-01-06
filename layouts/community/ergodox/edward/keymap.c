@@ -6,10 +6,12 @@
 #include "debug.h"
 #include "action_layer.h"
 #include "version.h"
+#include "split_util.h"
 
-#define BASE 0 // default layer
-#define SYMB 1 // symbols
-#define MDIA 2 // media keys
+#define BASE 0
+#define SYMB 1
+#define MDIA 2
+#define SWAY 3
 
 enum custom_keycodes {
   PLACEHOLDER = SAFE_RANGE, // can always be here
@@ -45,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_LCTL,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,
   KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_RBRC,
   KC_TILDE, KC_PLUS,  KC_EQL,   KC_MINS,  KC_LALT,
-                                                    KC_ESC,   KC_TAB,
+                                                    KC_ESC,   MO(SWAY),
                                                               KC_LGUI,
                                           KC_SPC,   KC_ENT,   KC_LCTL,
   // Right Hand
@@ -143,11 +145,55 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_NO,
   KC_NO,    KC_MPLY,  KC_MUTE
 ),
+
+/* Keymap 3: Sway
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |  G1  |  G2  |  G3  |  G4  |  G5  |------|           |------|      |      |      |      |      |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |  G6  |  G7  |  G8  |  G9  |  G0  |      |           |      |      |      |      |      |      |        |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   `----------------------------------'                                       `----------------------------------'
+ *                                        ,-------------.       ,-------------.
+ *                                        |      |      |       |      |      |
+ *                                 ,------|------|------|       |------+------+------.
+ *                                 |      |      |      |       |      |      |      |
+ *                                 |      |      |------|       |------|      |      |
+ *                                 |      |      |      |       |      |      |      |
+ *                                 `--------------------'       `--------------------'
+ */
+// Sway
+[SWAY] = LAYOUT_ergodox(
+  // Left Hand
+  KC_NO,     KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
+  KC_NO,     KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
+  KC_NO,     LGUI(KC_1), LGUI(KC_2), LGUI(KC_3), LGUI(KC_4), LGUI(KC_5),
+  KC_NO,     LGUI(KC_6), LGUI(KC_7), LGUI(KC_8), LGUI(KC_9), LGUI(KC_0), KC_NO,
+  KC_NO,     KC_NO,      KC_NO,      KC_NO,      KC_NO,
+                                                             KC_NO,      KC_NO,
+                                                                         KC_NO,
+                                                 KC_NO,      KC_NO,      KC_NO,
+  // Right Hand
+  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
+  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
+            KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
+  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
+                      KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
+  KC_NO,    KC_NO,
+  KC_NO,
+  KC_NO,    KC_NO,    KC_NO
+),
 };
 
 const uint16_t PROGMEM fn_actions[] = {
     [1] = ACTION_LAYER_TAP_TOGGLE(SYMB),               // FN1 - Momentary Layer 1 (Symbols)
-    [2] = ACTION_LAYER_TAP_TOGGLE(MDIA)                // FN2 - Momentary Layer 2 (Media)
+    [2] = ACTION_LAYER_TAP_TOGGLE(MDIA),               // FN2 - Momentary Layer 2 (Media)
+    [3] = ACTION_LAYER_TAP_TOGGLE(SWAY)                // FN3 - Momentary Layer 3 (Sway)
 };
 
 /*
@@ -163,23 +209,46 @@ void matrix_init_user(void) {
 
 void keyboard_post_init_user(void) {
   //debug_enable = true;
-  ergodox_infinity_lcd_color(2000, 2000, 2000);
 }
 
 void st7565_task_user(void) {
   uint8_t layer = get_highest_layer(layer_state);
 
   switch (layer) {
+    case BASE:
+      st7565_clear();
+      ergodox_infinity_lcd_color(2000, 2000, 2000);
+      break;
+
     case SYMB:
       ergodox_infinity_lcd_color(60395, 52942, 15677);
-      st7565_write("Symbol", false);
+      if (is_keyboard_left()) {
+        st7565_set_cursor(0, 1);
+        st7565_write("Symbol", false);
+      } else {
+        st7565_write_ln("! & * %", false);
+        st7565_write_ln("# ^ $ @", false);
+      }
       break;
+
     case MDIA:
       ergodox_infinity_lcd_color(5911, 53713, 40092);
-      st7565_write("Mouse", false);
+      if (is_keyboard_left()) {
+        st7565_set_cursor(0, 1);
+        st7565_write("Mouse", false);
+      }
       break;
+
+    case SWAY:
+      ergodox_infinity_lcd_color(17219, 27756, 59624);
+      if (is_keyboard_left()) {
+        st7565_set_cursor(0, 1);
+        st7565_write("Sway", false);
+      }
+      break;
+
     default:
-      ergodox_infinity_lcd_color(2000, 2000, 2000);
+      ergodox_infinity_lcd_color(0, 0, 0);
       st7565_clear();
       break;
   }

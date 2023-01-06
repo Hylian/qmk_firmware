@@ -8,9 +8,10 @@
 
 /* Set 0 if debouncing isn't needed */
 #undef DEBOUNCE
-#define DEBOUNCE  2
+#define DEBOUNCE  3
 
 #define SPLIT_LAYER_STATE_ENABLE
-#define SPLIT_ST7565_ENABLE
+//#define SPLIT_ST7565_ENABLE
+#define ST7565_TIMEOUT 0
 
 #define usb_lld_disconnect_bus(usbp) do {} while(0)
