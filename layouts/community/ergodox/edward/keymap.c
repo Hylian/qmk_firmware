@@ -33,7 +33,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *   |  ~   |   +  |   =  |   -  |  Alt |                                       | Left | Down |  Up  |Right |   `  |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
- *                                        | Esc  | Tab  |       | PgDn | PgUp |
+ *                                        | Esc  | Sway |       | PgDn | PgUp |
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      |Super |       | Symb |        |      |
  *                                 |Space |Enter |------|       |------|  Del   | Bksp |
