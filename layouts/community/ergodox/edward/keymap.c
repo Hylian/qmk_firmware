@@ -6,7 +6,9 @@
 #include "debug.h"
 #include "action_layer.h"
 #include "version.h"
+#ifdef ST7565_ENABLE
 #include "split_util.h"
+#endif
 
 #define BASE 0
 #define SYMB 1
@@ -153,11 +155,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |  G1  |  G2  |  G3  |  G4  |  G5  |------|           |------|      |      |      |      |      |        |
+ * | Ctrl   |  G1  |  G2  |  G3  |  G4  |  G5  |------|           |------| GH   | GJ   | GK   | GL   |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |  G6  |  G7  |  G8  |  G9  |  G0  |      |           |      |      |      |      |      |      |        |
+ * | Shift  |  G6  |  G7  |  G8  |  G9  |  G0  |      |           |      |      |      |      |      |      |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   |      |      |      |      |  Alt |                                       |GLeft |GDown | GUp  |GRight|      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
  *                                        |      |      |       |      |      |
@@ -172,21 +174,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // Left Hand
   KC_NO,     KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
   KC_NO,     KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
-  KC_NO,     LGUI(KC_1), LGUI(KC_2), LGUI(KC_3), LGUI(KC_4), LGUI(KC_5),
-  KC_NO,     LGUI(KC_6), LGUI(KC_7), LGUI(KC_8), LGUI(KC_9), LGUI(KC_0), KC_NO,
-  KC_NO,     KC_NO,      KC_NO,      KC_NO,      KC_NO,
+  KC_LCTL,   LGUI(KC_1), LGUI(KC_2), LGUI(KC_3), LGUI(KC_4), LGUI(KC_5),
+  KC_LSFT,   LGUI(KC_6), LGUI(KC_7), LGUI(KC_8), LGUI(KC_9), LGUI(KC_0), KC_NO,
+  KC_NO,     KC_NO,      KC_NO,      KC_NO,      KC_LALT,
                                                              KC_NO,      KC_NO,
                                                                          KC_NO,
                                                  KC_NO,      KC_NO,      KC_NO,
   // Right Hand
-  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-            KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-                      KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-  KC_NO,    KC_NO,
+  KC_NO,     KC_NO,      KC_NO,         KC_NO,         KC_NO,       KC_NO,          KC_NO,
+  KC_NO,     KC_NO,      KC_NO,         KC_NO,         KC_NO,       KC_NO,          KC_NO,
+             LGUI(KC_H), LGUI(KC_J),    LGUI(KC_K),    LGUI(KC_L),  KC_NO,          KC_NO,
+  KC_NO,     KC_NO,      KC_NO,         KC_NO,         KC_NO,       KC_NO,          KC_NO,
+                         LGUI(KC_LEFT), LGUI(KC_DOWN), LGUI(KC_UP), LGUI(KC_RIGHT), KC_NO,
+  KC_NO,     KC_NO,
   KC_NO,
-  KC_NO,    KC_NO,    KC_NO
+  KC_NO,     KC_NO,      KC_NO
 ),
 };
 
@@ -211,6 +213,7 @@ void keyboard_post_init_user(void) {
   //debug_enable = true;
 }
 
+#ifdef ST7565_ENABLE
 void st7565_task_user(void) {
   uint8_t layer = get_highest_layer(layer_state);
 
@@ -253,3 +256,4 @@ void st7565_task_user(void) {
       break;
   }
 };
+#endif
