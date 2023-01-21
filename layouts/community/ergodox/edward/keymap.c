@@ -37,9 +37,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        ,-------------.       ,-------------.
  *                                        | Esc  | Sway |       | PgDn | PgUp |
  *                                 ,------|------|------|       |------+--------+------.
- *                                 |      |      |Super |       | Symb |        |      |
+ *                                 |      |      |Super |       | Media|        |      |
  *                                 |Space |Enter |------|       |------|  Del   | Bksp |
- *                                 |      |      | Ctrl |       |Media |        |      |
+ *                                 |      |      | Ctrl |       | Symb |        |      |
  *                                 `--------------------'       `----------------------'
  */
 [BASE] = LAYOUT_ergodox(  // Layer 0 : default
@@ -59,8 +59,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_RCBR,  KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLASH, KC_RSFT,
                       KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT, KC_GRV,
   KC_PGDN,  KC_PGUP,
-  MO(SYMB),
-  MO(MDIA), KC_DEL,   KC_BSPC
+  MO(MDIA),
+  MO(SYMB), KC_DEL,   KC_BSPC
 ),
 
 /* Keymap 1: Symbol Layer
@@ -77,7 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *   |       |   +  |   =  |   -  |   .  |                                       |      |      |      |      |      |
  *   `-----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
- *                                        |      |      |       |      |      |
+ *                                        |      |      |       | End  | Home |
  *                                 ,------|------|------|       |------+------+------.
  *                                 |      |      |      |       |      |      |      |
  *                                 |Space |Enter |------|       |------|      |      |
@@ -101,7 +101,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             KC_NO,    KC_EXLM,  KC_AMPR,  KC_ASTR,  KC_PERC,  KC_NO,
   KC_NO,    KC_NO,    KC_HASH,  KC_CIRC,  KC_DLR,   KC_AT,    KC_NO,
                       KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
-  KC_NO,    KC_NO,
+  KC_END,   KC_HOME,
   KC_NO,
   KC_NO,    KC_NO,    KC_NO
 ),
