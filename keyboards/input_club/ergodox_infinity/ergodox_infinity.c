@@ -350,6 +350,7 @@ __attribute__((weak)) void st7565_task_user(void) {
 void usart_master_init(SerialDriver **driver) {
     PORTA->PCR[1] = PORTx_PCRn_PE | PORTx_PCRn_PS | PORTx_PCRn_PFE | PORTx_PCRn_MUX(2);
     PORTA->PCR[2] = PORTx_PCRn_DSE | PORTx_PCRn_SRE | PORTx_PCRn_MUX(2);
+    PORTE->PCR[0] &= ~PORTx_PCRn_MUX_MASK;
 
     // driver is set to SD1 in config.h
 }
