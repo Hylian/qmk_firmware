@@ -11,12 +11,29 @@
 #undef  MOUSEKEY_WHEEL_DELAY
 #define MOUSEKEY_WHEEL_DELAY    0
 
+#define FORCE_NKRO
+
+#undef USB_POLLING_INTERVAL_MS
+#define USB_POLLING_INTERVAL_MS 1
+
 /* Set 0 if debouncing isn't needed */
 #undef DEBOUNCE
-#define DEBOUNCE  3
+#define DEBOUNCE  2
+
+#define MASTER_LEFT
+
+#define SPLIT_USB_DETECT
+#define SPLIT_WATCHDOG_ENABLE
+#define SPLIT_WATCHDOG_TIMEOUT 3000
+#define SPLIT_USB_TIMEOUT 5000
+#define FORCED_SYNC_THROTTLE_MS 200
+#define SELECT_SOFT_SERIAL_SPEED 1
+//#define SERIAL_USART_SPEED 115200
+#define SPLIT_MAX_CONNECTION_ERRORS 20
+
 
 #ifdef ST7565_ENABLE
 #define SPLIT_LAYER_STATE_ENABLE
 #define ST7565_TIMEOUT 0
-#define usb_lld_disconnect_bus(usbp) do {} while(0)
+//#define usb_lld_disconnect_bus(usbp) do {} while(0)
 #endif
