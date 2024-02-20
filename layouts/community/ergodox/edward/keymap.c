@@ -70,11 +70,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
  * |  Bksp   |   7  |   8  |   9  |      |      |      |           |      |      |      |      |      |      |   F12  |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |         |   4  |   5  |   6  |   *  |   /  |------|           |------|      |   !  |   &  |   *  |  %   |        |
+ * |    .    |   4  |   5  |   6  |   *  |   /  |------|           |------|      |   !  |   &  |   *  |  %   |        |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |    0    |   1  |   2  |   3  |   +  |   -  |      |           |      |      |   #  |   ^  |   $  |  @   |        |
  * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |       |   +  |   =  |   -  |   .  |                                       |      |      |      |      |      |
+ *   |       |   +  |   =  |   -  | Alt  |                                       |      |      |      |      |      |
  *   `-----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
  *                                        |      |      |       | End  | Home |
@@ -89,16 +89,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // Left Hand
   KC_PSCR,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,
   KC_BSPC,  KC_7,     KC_8,     KC_9,     KC_NO,    KC_NO,    KC_NO,
-  KC_NO,    KC_4,     KC_5,     KC_6,     KC_ASTR,  KC_SLASH,
+  KC_DOT,   KC_4,     KC_5,     KC_6,     KC_ASTR,  KC_SLASH,
   KC_0,     KC_1,     KC_2,     KC_3,     KC_PLUS,  KC_MINS,  KC_NO,
-  KC_NO,    KC_PLUS,  KC_EQL,   KC_MINS,  KC_DOT,
+  KC_NO,    KC_PLUS,  KC_EQL,   KC_MINS,  KC_LALT,
                                                     KC_NO,    KC_NO,
                                                               KC_NO,
                                           KC_SPC,   KC_ENT,   KC_NO,
   // Right Hand
   KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,
   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_F12,
-            KC_NO,    KC_EXLM,  KC_AMPR,  KC_ASTR,  KC_PERC,  KC_NO,
+            KC_NO,    KC_EXLM,  KC_AMPR,  KC_ASTR,  KC_PERC,  KC_RCTL,
   KC_NO,    KC_NO,    KC_HASH,  KC_CIRC,  KC_DLR,   KC_AT,    KC_NO,
                       KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,
   KC_END,   KC_HOME,
@@ -151,13 +151,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 3: Sway
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |        |  G1  |  G2  |  G3  |  G4  |  G5  |      |           |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |        |  G6  |  G7  |  G8  |  G9  |  G0  |      |           |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * | Ctrl   |  G1  |  G2  |  G3  |  G4  |  G5  |------|           |------| GH   | GJ   | GK   | GL   |      |        |
+ * | Ctrl   |      |      |      |      |      |------|           |------| GH   | GJ   | GK   | GL   |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * | Shift  |  G6  |  G7  |  G8  |  G9  |  G0  |      |           |      |      |      |      |      |      |        |
+ * | Shift  |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |      |      |      |      |  Alt |                                       |GLeft |GDown | GUp  |GRight|      |
  *   `----------------------------------'                                       `----------------------------------'
@@ -172,10 +172,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Sway
 [SWAY] = LAYOUT_ergodox(
   // Left Hand
-  KC_NO,     KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
-  KC_NO,     KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
-  KC_LCTL,   LGUI(KC_1), LGUI(KC_2), LGUI(KC_3), LGUI(KC_4), LGUI(KC_5),
-  KC_LSFT,   LGUI(KC_6), LGUI(KC_7), LGUI(KC_8), LGUI(KC_9), LGUI(KC_0), KC_NO,
+  KC_NO,     LGUI(KC_1), LGUI(KC_2), LGUI(KC_3), LGUI(KC_4), LGUI(KC_5), KC_NO,
+  KC_NO,     LGUI(KC_6), LGUI(KC_7), LGUI(KC_8), LGUI(KC_9), LGUI(KC_0), KC_NO,
+  KC_LCTL,   KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
+  KC_LSFT,   KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
   KC_NO,     KC_NO,      KC_NO,      KC_NO,      KC_LALT,
                                                              KC_NO,      KC_NO,
                                                                          KC_NO,
@@ -215,45 +215,50 @@ void keyboard_post_init_user(void) {
 
 #ifdef ST7565_ENABLE
 void st7565_task_user(void) {
+  static uint8_t prev_layer = 255;
   uint8_t layer = get_highest_layer(layer_state);
 
-  switch (layer) {
-    case BASE:
-      st7565_clear();
-      ergodox_infinity_lcd_color(2000, 2000, 2000);
-      break;
+  if (layer != prev_layer) {
+    prev_layer = layer;
 
-    case SYMB:
-      ergodox_infinity_lcd_color(60395, 52942, 15677);
-      if (is_keyboard_left()) {
-        st7565_set_cursor(0, 1);
-        st7565_write("Symbol", false);
-      } else {
-        st7565_write_ln("! & * %", false);
-        st7565_write_ln("# ^ $ @", false);
-      }
-      break;
+    switch (layer) {
+      case BASE:
+        st7565_clear();
+        ergodox_infinity_lcd_color(0, 0, 0);
+        break;
 
-    case MDIA:
-      ergodox_infinity_lcd_color(5911, 53713, 40092);
-      if (is_keyboard_left()) {
-        st7565_set_cursor(0, 1);
-        st7565_write("Mouse", false);
-      }
-      break;
+      case SYMB:
+        ergodox_infinity_lcd_color(60395, 52942, 15677);
+        if (is_keyboard_left()) {
+          st7565_set_cursor(0, 1);
+          st7565_write("Symbol", false);
+        } else {
+          st7565_write_ln("! & * %", false);
+          st7565_write_ln("# ^ $ @", false);
+        }
+        break;
 
-    case SWAY:
-      ergodox_infinity_lcd_color(17219, 27756, 59624);
-      if (is_keyboard_left()) {
-        st7565_set_cursor(0, 1);
-        st7565_write("Sway", false);
-      }
-      break;
+      case MDIA:
+        ergodox_infinity_lcd_color(5911, 53713, 40092);
+        if (is_keyboard_left()) {
+          st7565_set_cursor(0, 1);
+          st7565_write("Mouse", false);
+        }
+        break;
 
-    default:
-      ergodox_infinity_lcd_color(0, 0, 0);
-      st7565_clear();
-      break;
+      case SWAY:
+        ergodox_infinity_lcd_color(17219, 27756, 59624);
+        if (is_keyboard_left()) {
+          st7565_set_cursor(0, 1);
+          st7565_write("Sway", false);
+        }
+        break;
+
+      default:
+        ergodox_infinity_lcd_color(0, 0, 0);
+        st7565_clear();
+        break;
+    }
   }
 };
 #endif
