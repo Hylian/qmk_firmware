@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #include "debug.h"
 #include "action_layer.h"
@@ -10,14 +11,26 @@
 #include "split_util.h"
 #endif
 
+//#define REPEAT_DELAY_MS  (17)
+#define REPEAT_KEYCODE  (KC_SPC)
+
 #define BASE 0
 #define SYMB 1
 #define MDIA 2
 #define SWAY 3
+#define GAME 4
 
 enum custom_keycodes {
   PLACEHOLDER = SAFE_RANGE, // can always be here
   EPRM,
+  KVM_CTRL,
+  KVM1,
+  KVM2,
+  REPEAT_KEY,
+  DELAY_INC,
+  DELAY_DEC,
+  SOCD_A,
+  SOCD_D,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -77,7 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *   |       |   +  |   =  |   -  | Alt  |                                       |      |      |      |      |      |
  *   `-----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
- *                                        |      |      |       | End  | Home |
+ *                                        |      | BL   |       | End  | Home |
  *                                 ,------|------|------|       |------+------+------.
  *                                 |      |      |      |       |      |      |      |
  *                                 |Space |Enter |------|       |------|      |      |
@@ -92,9 +105,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_DOT,   KC_4,     KC_5,     KC_6,     KC_ASTR,  KC_SLASH,
   KC_0,     KC_1,     KC_2,     KC_3,     KC_PLUS,  KC_MINS,  KC_NO,
   KC_NO,    KC_PLUS,  KC_EQL,   KC_MINS,  KC_LALT,
-                                                    KC_NO,    KC_NO,
+                                                    KC_NO,    QK_BOOTLOADER,
                                                               KC_NO,
-                                          KC_SPC,   KC_ENT,   KC_NO,
+                                TG(GAME), KC_ENT,   KC_NO,
   // Right Hand
   KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,
   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_F12,
@@ -181,14 +194,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                          KC_NO,
                                                  KC_NO,      KC_NO,      KC_NO,
   // Right Hand
-  KC_NO,     KC_NO,      KC_NO,         KC_NO,         KC_NO,       KC_NO,          KC_NO,
-  KC_NO,     KC_NO,      KC_NO,         KC_NO,         KC_NO,       KC_NO,          KC_NO,
-             LGUI(KC_H), LGUI(KC_J),    LGUI(KC_K),    LGUI(KC_L),  KC_NO,          KC_NO,
+  KC_NO,     KC_NO,      KC_NO,         KC_NO,         KC_NO,       KC_NO,          KVM1,
+  KC_NO,     KC_NO,      KC_NO,         KC_NO,         KC_NO,       KC_NO,          KVM2,
+             LGUI(KC_H), LGUI(KC_J),    LGUI(KC_K),    LGUI(KC_L),  KC_NO,          KVM_CTRL,
   KC_NO,     KC_NO,      KC_NO,         KC_NO,         KC_NO,       KC_NO,          KC_NO,
                          LGUI(KC_LEFT), LGUI(KC_DOWN), LGUI(KC_UP), LGUI(KC_RIGHT), KC_NO,
   KC_NO,     KC_NO,
   KC_NO,
   KC_NO,     KC_NO,      KC_NO
+),
+
+[GAME] = LAYOUT_ergodox(
+  // Left Hand
+  KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
+  KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
+  KC_TRNS,   SOCD_A,    KC_TRNS,   SOCD_D,    KC_TRNS,   KC_TRNS,
+  KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
+  KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
+                                                             KC_TRNS,    KC_TRNS,
+                                                                         KC_TRNS,
+                                              KC_TRNS/*REPEAT_KEY*/,    KC_TRNS,    KC_TRNS,
+
+  KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
+  KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
+             KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
+  KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
+                        KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,   KC_TRNS,
+  DELAY_DEC, DELAY_INC,
+  KC_TRNS,
+  TO(BASE),   KC_TRNS,  KC_TRNS
 ),
 };
 
@@ -198,15 +232,108 @@ const uint16_t PROGMEM fn_actions[] = {
     [3] = ACTION_LAYER_TAP_TOGGLE(SWAY)                // FN3 - Momentary Layer 3 (Sway)
 };
 
-/*
+static int32_t s_prev_time = 0;
+static bool s_repeat_enabled = false;
+static uint8_t s_repeat_delay_ms = 62;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  return true;
+    static bool a_pressed = false;
+    static bool a_active = false;
+    static bool d_pressed = false;
+    static bool d_active = false;
+
+    switch (keycode) {
+        case SOCD_A:
+            if (record->event.pressed) {
+                if (d_pressed) {
+                    unregister_code(KC_D);
+                    d_active = false;
+                }
+                register_code(KC_A);
+                a_pressed = true;
+                a_active = true;
+            } else {
+                unregister_code(KC_A);
+                a_pressed = false;
+                a_active = false;
+                if (d_pressed && !d_active) {
+                    register_code(KC_D);
+                    d_active = true;
+                }
+            }
+            return false;
+        case SOCD_D:
+            if (record->event.pressed) {
+                if (a_pressed) {
+                    unregister_code(KC_A);
+                    a_active = false;
+                }
+                register_code(KC_D);
+                d_pressed = true;
+                d_active = true;
+            } else {
+                unregister_code(KC_D);
+                d_pressed = false;
+                d_active = false;
+                if (a_pressed && !a_active) {
+                    register_code(KC_A);
+                    a_active = true;
+                }
+            }
+            return false;
+        case KVM1:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_RCTL) SS_TAP(X_RCTL) "1");
+            }
+            break;
+        case KVM2:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_RCTL) SS_TAP(X_RCTL) "2");
+            }
+            break;
+        case KVM_CTRL:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_RCTL) SS_TAP(X_RCTL));
+            }
+            break;
+        case DELAY_INC:
+            if (record->event.pressed) {
+                s_repeat_delay_ms++;
+            }
+            break;
+        case DELAY_DEC:
+            if (record->event.pressed) {
+                if (s_repeat_delay_ms > 0) {
+                    s_repeat_delay_ms--;
+                }
+            }
+            break;
+        case REPEAT_KEY:
+            if (record->event.pressed) {
+                tap_code(REPEAT_KEYCODE);
+                s_prev_time = timer_read32();
+                s_repeat_enabled = true;
+            } else {
+                s_repeat_enabled = false;
+            }
+            break;
+        default:
+            break;
+    }
+    return true;
 }
-*/
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
+};
 
+void matrix_scan_user(void) {
+    if (s_repeat_enabled) {
+        if (timer_elapsed32(s_prev_time) >= s_repeat_delay_ms) {
+            s_prev_time = timer_read32();
+            tap_code(REPEAT_KEYCODE);
+        }
+    }
 };
 
 void keyboard_post_init_user(void) {
@@ -217,6 +344,7 @@ void keyboard_post_init_user(void) {
 void st7565_task_user(void) {
   static uint8_t prev_layer = 255;
   uint8_t layer = get_highest_layer(layer_state);
+  char buf[32] = {0};
 
   if (layer != prev_layer) {
     prev_layer = layer;
@@ -254,11 +382,32 @@ void st7565_task_user(void) {
         }
         break;
 
+      case GAME:
+        ergodox_infinity_lcd_color(8000, 8000, 100);
+        if (is_keyboard_left()) {
+          st7565_clear();
+        }
+        sprintf(buf, "%i", s_repeat_delay_ms);
+        st7565_set_cursor(0, 1);
+        st7565_write(buf, false);
+        break;
+
       default:
         ergodox_infinity_lcd_color(0, 0, 0);
         st7565_clear();
         break;
     }
+  }
+
+
+  static uint8_t prev_delay = 0;
+  if (layer == GAME &&
+      is_keyboard_left() &&
+      prev_delay != s_repeat_delay_ms) {
+    sprintf(buf, "%i", s_repeat_delay_ms);
+    st7565_set_cursor(0, 1);
+    st7565_write(buf, false);
+    prev_delay = s_repeat_delay_ms;
   }
 };
 #endif
