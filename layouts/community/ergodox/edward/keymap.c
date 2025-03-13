@@ -232,11 +232,14 @@ const uint16_t PROGMEM fn_actions[] = {
     [3] = ACTION_LAYER_TAP_TOGGLE(SWAY)                // FN3 - Momentary Layer 3 (Sway)
 };
 
+/*
 static int32_t s_prev_time = 0;
 static bool s_repeat_enabled = false;
 static uint8_t s_repeat_delay_ms = 62;
+*/
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  /*
     static bool a_pressed = false;
     static bool a_active = false;
     static bool d_pressed = false;
@@ -320,24 +323,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         default:
             break;
     }
+*/
     return true;
 }
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
-};
+}
 
 void matrix_scan_user(void) {
+  /*
     if (s_repeat_enabled) {
         if (timer_elapsed32(s_prev_time) >= s_repeat_delay_ms) {
             s_prev_time = timer_read32();
             tap_code(REPEAT_KEYCODE);
         }
     }
-};
+    */
+}
 
 void keyboard_post_init_user(void) {
-  //debug_enable = true;
+  debug_enable=true;
+  debug_matrix=true;
+  debug_keyboard=true;
 }
 
 #ifdef ST7565_ENABLE
